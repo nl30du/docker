@@ -5,7 +5,7 @@
 
 #用法:
 设置环境变量指向目录为docker私有仓库的目录:
-    export REGISTRY_DATA_DIR=/opt/registry_data/docker/registry/v2
+    export REGISTRY_DATA_DIR=/data/registry/docker/registry/v2
 
 
 删除镜像(all):
@@ -20,6 +20,7 @@
 ## docker-registry
 
 #显示仓库内的镜像及tag
+
 
 #用法:
 直接运行:
