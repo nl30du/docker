@@ -1,0 +1,52 @@
+#!/usr/bin/evn python
+# _*_ coding:utf-8 _*_
+
+
+import requests
+import json
+import traceback
+ 
+repo_ip = '10.0.2.98'
+repo_port = 5000
+ 
+def getImagesNames(repo_ip,repo_port):
+    docker_images_names = {}
+    try:
+        url = "http://" + repo_ip + ":" +str(repo_port) + "/v2/_catalog"
+        res =requests.get(url).content.strip()
+        res_dic = json.loads(res)
+        docker_images = res_dic['repositories']
+        for i in docker_images:
+            docker_tags_name = i + '_tags'
+            docker_tags_name = []
+            url2 = "http://" + repo_ip + ":" +str(repo_port) +"/v2/" + str(i) + "/tags/list"
+            res2 =requests.get(url2).content.strip()
+            res_dic2 = json.loads(res2)
+            name = res_dic2['name']
+            tags = res_dic2['tags']
+	    try:
+                for tag in tags:
+                    docker_tags_name.append(tag)
+            except:
+	        a = 1    
+            url_docker_name = repo_ip + ":" +str(repo_port)+'/'+i 
+	    docker_images_names[url_docker_name] = docker_tags_name
+             
+
+
+    except:
+        traceback.print_exc()
+    return docker_images_names
+ 
+res = getImagesNames(repo_ip, repo_port)
+
+str1 = '                              '
+str2 = ' '
+length = len(str1)+len('Images')-1
+print 'Images'+str1+'Tags'
+
+for i in res:
+    print i+(int(length)-len(i))*str2,
+    for j in res[i]:
+        print j+',',
+    print
