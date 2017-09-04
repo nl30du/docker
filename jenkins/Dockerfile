@@ -2,7 +2,7 @@
 # Version 1.0
 
 
-FROM daocloud.io/library/centos:6
+FROM centos:6
 
 MAINTAINER tangchengwei@mftour.cn
 
@@ -10,13 +10,15 @@ RUN useradd -d /var/jenkins_home jenkins && \
 
 mkdir /opt/jenkins && \ 
 
-mkdir -p /data/jenkins/{home,war} && \
+mkdir -p /data/jenkins/home && \
 
-yum -y install git && \
+yum -y install git kde-l10n-Chinese  && \
 
-yum -y install glibc-common && \
+yum -y reinstall glibc-common && \
 
-echo "LANG="zh_CN.UTF-8"" > /etc/sysconfig/i18n && yum clean all 
+echo "LANG="zh_CN.UTF-8"" > /etc/sysconfig/i18n && yum clean all && \
+
+ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
 
 COPY jenkins.war /opt/jenkins/jenkins.war
 
